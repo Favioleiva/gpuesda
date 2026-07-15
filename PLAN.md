@@ -10,6 +10,10 @@
 | 4. Validation | PySAL equivalence and edge-case tests | Phase 3 | Required tests pass at documented float tolerances | Test suite and validation output |
 | 5. Performance | Synthetic data and representative benchmarks | Phase 4 | Transfer and compute timing exported; infeasible cases recorded | JSON/CSV benchmark results |
 | 6. Delivery | Notebooks, report, README, final status | Phase 5 | Reproducible documented MVP satisfying acceptance checklist | Five notebooks, reports, final commit |
+| 7. Raster topology | Audit Black Marble cell/grid/tile indices and memory | Vector MVP | One-to-one verified national integer topology or documented correction | JSON audit and readable report |
+| 8. Raster observed core | Spatial operators, CPU stencils, CuPy stencils, observed Moran/LISA | Phase 7 | Small-grid PySAL equivalence and CPU/GPU equivalence | Raster package modules and tests |
+| 9. Raster inference | Streaming global and conditional-local permutations | Phase 8 | Reproducible 99/999 modes without `n × permutations` storage | Batched inference and OOM fallback |
+| 10. Black Marble/A100 delivery | Local observed run, wheel, Colab notebook, figures, docs | Phase 9 | Reproducible outputs and complete regression suite | v0.2 wheel and notebook 06 |
 
 ## Risks
 
@@ -21,8 +25,8 @@
 
 ## Current phase
 
-Phase 6 — Delivery complete.
+Phase 8 — Raster observed core validated; national observed run next.
 
 ## Next concrete action
 
-MVP complete. Next optional action: run the extended 5k–25k and cross-hardware benchmark matrix.
+Execute NTL/log1p observed statistics on the national raster and profile local RTX 3060 memory/runtime.

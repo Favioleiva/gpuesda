@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "gpu-esda"
 version = "0.1.0"
-description = "Validated CPU/GPU numerical backend for exploratory spatial data analysis"
+description = "Validated vector and raster CPU/GPU backend for exploratory spatial data analysis"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "BSD-3-Clause"}
@@ -22,6 +22,7 @@ dependencies = [
   "scikit-learn>=1.3",
   "statsmodels>=0.14",
   "psutil>=5.9",
+  "pyarrow>=15",
 ]
 
 [project.optional-dependencies]
@@ -29,6 +30,7 @@ dependencies = [
 # CUDA 12 drivers should install cupy-cuda12x instead.
 gpu = ["cupy-cuda13x[ctk]>=14.1", "numba>=0.61"]
 dev = ["pytest>=8", "pytest-cov>=5", "ruff>=0.8", "mypy>=1.13", "nbformat>=5.10"]
+blackmarble = ["huggingface-hub>=0.25", "matplotlib>=3.8"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/gpu_esda"]

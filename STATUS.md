@@ -2,11 +2,50 @@
 
 ## Current state
 
-- Phase: 6 — Delivery complete
-- Overall: tested MVP complete
-- Next action: optional extended scaling and cross-hardware benchmarks
+- Phase: Raster extension — observed engine validated
+- Overall: vector MVP protected; raster CPU/GPU core in progress
+- Branch: `feature/raster-stencil`
+- Vector baseline tag: `v0.1.0-vector-mvp`
+- Next action: execute observed Black Marble ESDA locally and profile memory/runtime
 
 ## Updates
+
+### 2026-07-16 00:18 JST — Vector MVP protected and baseline revalidated
+
+- Completed task: verified clean Git state, tagged the validated vector MVP, created the raster feature branch, and reran every existing quality gate before code changes.
+- Files created or modified: `STATUS.md` only; Git tag `v0.1.0-vector-mvp`; branch `feature/raster-stencil`.
+- Commands executed: Git status/tag/branch operations; `python -m pytest -q`; Ruff; `compileall`; environment diagnostics; `pip check`.
+- Tests executed: complete existing suite, live CPU/GPU tests included.
+- Test results: 28 passed in 3.33 s; Ruff clean; compilation successful; no broken requirements.
+- Benchmark results: none in this stage.
+- Environment: RTX 3060 12 GiB, compute capability 8.6, CuPy 14.1.1/CUDA runtime 13.2, driver 591.86; 64 GiB host RAM. Numba CUDA is unavailable, so the raster GPU path will use CuPy.
+- Problems encountered: none.
+- Unresolved questions: private Hugging Face data/token availability and whether `grid_row/grid_col` form a continuous national raster.
+- Next action: create the reproducible grid-audit script and inspect the actual Parquet files without exposing credentials.
+
+### 2026-07-16 00:31 JST — Black Marble grid audited from private Parquet
+
+- Completed task: implemented and ran authenticated, reproducible Parquet audit using minimum required columns.
+- Files created or modified: `scripts/audit_blackmarble_grid.py`, generated `results/blackmarble_grid_audit.json`, `docs/blackmarble_grid_audit.md`, result directories.
+- Commands executed: authenticated Hugging Face repository metadata query; `python scripts/audit_blackmarble_grid.py`; schema/hash inspection.
+- Tests executed: row/schema/uniqueness/topology checks embedded in the audit.
+- Test results: both files contain 6,111,958 unique one-to-one `cell_id` values in identical order; `(grid_row, grid_col)` is unique; tile row/column offsets are constant.
+- Benchmark results: national rectangle is 4,395 × 3,042 (13,369,590 positions), with 6,111,958 occupied positions and 7,257,632 holes (45.7154% coverage). One float32 rectangle is 51.0 MiB; three are 153.0 MiB.
+- Problems encountered: none; the national integer topology is continuous and required no correction.
+- Unresolved questions: missing daily-value count and full observed GPU timings are pending reconstruction.
+- Next action: implement and validate implicit spatial operators.
+
+### 2026-07-16 00:42 JST — Implicit raster CPU/GPU operators validated
+
+- Completed task: added operator abstraction, matrix adapter, Black Marble raster reconstruction, Rook/Queen/circular d^-2 stencils, NumPy/CuPy lag, observed Global/Local Moran, quadrant and island handling.
+- Files created or modified: `src/gpu_esda/operators/*`, `src/gpu_esda/raster/*`, public API, three raster test modules, raster API/methodology docs.
+- Commands executed: Ruff format/check; CPU/GPU smoke checks; complete pytest suite.
+- Tests executed: 3×3, 5×5, 10×10, full grid, interior hole, irregular coast, island, simulated tile border, valid zero, NoData, batch shape, CPU/GPU equivalence, explicit PySAL equivalence.
+- Test results: 47 passed in 4.11 s; Ruff clean. No vector regressions.
+- Benchmark results: none at national scale yet.
+- Problems encountered: CuPy's `where=` ufunc form is not portable; row normalization uses a safe denominator followed by masking.
+- Unresolved questions: production permutation cost at 6.1 million valid cells remains to be profiled.
+- Next action: run observed NTL/log1p workflows on the local RTX 3060 with staged timing and memory tracking.
 
 ### 2026-07-15 23:23 JST — Repository and package scaffold initialized
 

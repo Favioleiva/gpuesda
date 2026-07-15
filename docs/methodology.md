@@ -8,3 +8,8 @@ Input shape convention is observation-first: `(n,)`, `(n, columns)`, or `(n, var
 
 Synthetic data use `numpy.random.default_rng(seed)` with fixed defaults and cover uniform, clustered, and grid coordinates; independent and spatially smoothed values; variables, periods, missing values, islands, and intentional duplicates.
 
+## Raster engine
+
+Raster topology is an implicit stencil over verified integer grid coordinates. No national weight matrix is constructed. Each shifted contribution is gated by both focal and neighbor masks; row denominators are recomputed from the same valid pairs. This prevents coast, holes, and missing retrievals from becoming zero-valued observations. Genuine NTL zero is retained.
+
+The Black Marble audit established a 4,395 × 3,042 national rectangle with 6,111,958 occupied positions and 7,257,632 holes. Integer positions are unique, tile offsets are constant, and cross-tile adjacency exists in the national index, so reconstruction requires no spatial join. See `docs/blackmarble_grid_audit.md`.

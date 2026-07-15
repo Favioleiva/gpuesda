@@ -5,6 +5,7 @@ from __future__ import annotations
 import os
 import tempfile
 from dataclasses import dataclass
+from functools import lru_cache
 from typing import Any, Literal
 
 import scipy.sparse as sp
@@ -32,12 +33,23 @@ def _cupy() -> Any:
     return cp
 
 
+@lru_cache(maxsize=1)
+def _gpu_probe() -> tuple[bool, str | None, str | None]:
+    """Probe a real CUDA math kernel, not device enumeration alone."""
+    try:
+        cp = _cupy()
+        test = cp.ones((2, 2), dtype=cp.float32)
+        _ = test @ test
+        cp.cuda.Stream.null.synchronize()
+        props = cp.cuda.runtime.getDeviceProperties(cp.cuda.Device().id)
+        return True, props["name"].decode(), None
+    except Exception as exc:
+        return False, None, str(exc)
+
+
 def gpu_available() -> bool:
     """Return true only if CuPy imports and a CUDA device is usable."""
-    try:
-        return _cupy().cuda.runtime.getDeviceCount() > 0
-    except Exception:
-        return False
+    return _gpu_probe()[0]
 
 
 def select_backend(backend: BackendName = "auto") -> BackendInfo:
@@ -46,16 +58,14 @@ def select_backend(backend: BackendName = "auto") -> BackendInfo:
         raise ValueError("backend must be 'cpu', 'gpu', or 'auto'")
     if backend == "cpu":
         return BackendInfo("cpu", gpu_available())
-    try:
-        cp = _cupy()
-        props = cp.cuda.runtime.getDeviceProperties(cp.cuda.Device().id)
-        return BackendInfo("gpu", True, props["name"].decode())
-    except Exception as exc:
-        if backend == "gpu":
-            raise BackendUnavailableError(
-                f"GPU backend requested but CUDA/CuPy is unavailable: {exc}"
-            ) from exc
-        return BackendInfo("cpu", False, reason=str(exc))
+    available, device_name, reason = _gpu_probe()
+    if available:
+        return BackendInfo("gpu", True, device_name)
+    if backend == "gpu":
+        raise BackendUnavailableError(
+            f"GPU backend requested but CUDA/CuPy is unavailable: {reason}"
+        )
+    return BackendInfo("cpu", False, reason=reason)
 
 
 def is_gpu_array(value: Any) -> bool:

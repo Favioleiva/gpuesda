@@ -2,9 +2,9 @@
 
 ## Current state
 
-- Phase: 5 — Performance
-- Overall: in progress
-- Next action: create notebooks, benchmark report, and final user documentation
+- Phase: 6 — Delivery complete
+- Overall: tested MVP complete
+- Next action: optional extended scaling and cross-hardware benchmarks
 
 ## Updates
 
@@ -55,3 +55,30 @@
 - Problems encountered: first per-stage GPU timings allowed asynchronous spillover; synchronization was added around construction and normalization. End-to-end timings were already synchronized and remain valid.
 - Unresolved questions: break-even varies by hardware/driver and workload; sizes above 1,793 were not run in this MVP pass.
 - Next action: complete notebooks, benchmark report, README, and final acceptance verification.
+
+### 2026-07-16 00:06 JST — Documented and verified MVP completed
+
+- Completed task: created all five package-driven notebooks, benchmark report, complete README, real-kernel GPU fallback probe, and final acceptance verification.
+- Files created or modified: `README.md`, `docs/benchmark_report.md`, five notebooks, `src/gpu_esda/backend.py`, `src/gpu_esda/weights.py`, `PLAN.md`, `STATUS.md`.
+- Commands executed: notebook validation with `nbformat`; `python -m compileall`; `python -m pip check`; environment diagnostic; final Columbus validation; Git status/log review.
+- Tests executed: `python -m pytest -q`; `python -m ruff check src tests scripts benchmarks`; validation script on CPU and live RTX 3060 GPU.
+- Test results: 28 passed, Ruff clean, five notebooks valid, no broken Python requirements, compilation successful. Final Columbus CPU differences are zero; GPU lag max difference `7.11e-15`, Local Moran max difference `6.66e-16`, zero quadrant mismatches.
+- Benchmark results: retained from the synchronized representative run above; no claims were changed by final verification.
+- Problems encountered: notebook validator warns that compact hand-authored cells omit optional cell IDs; notebooks are valid under nbformat 4.5 and the warning does not affect execution.
+- Unresolved questions: performance on T4/L4/A100 and 5k–25k workloads is not measured and is explicitly excluded from current claims.
+- Next action: none required for the MVP; optional extended benchmark campaign.
+
+## MVP acceptance checklist
+
+- [x] Installable `src` package; CPU-only mode and automatic fallback.
+- [x] Complete GPU detection and explicit failure behavior.
+- [x] Reproducible official Columbus dataset, Queen/KNN CPU baselines.
+- [x] Independent dense/CSR inverse-distance-squared weights and normalization.
+- [x] CPU/GPU spatial lag, Global Moran, Local Moran, permutations, and FDR.
+- [x] 999 and 9,999 permutations executed on the reference-size dataset.
+- [x] Deterministic equivalence tests and documented RNG differences.
+- [x] Synchronized warmed benchmarks with transfer time and dense/CSR comparison.
+- [x] Multi-variable/panel APIs and result tables.
+- [x] Machine-readable benchmark/validation exports.
+- [x] Five runnable package-driven notebooks and complete documentation.
+- [x] `STATUS.md` reflects the tested repository state.

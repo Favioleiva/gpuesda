@@ -19,9 +19,11 @@ def test_explicit_gpu_failure(monkeypatch):
         raise ImportError("test unavailable")
 
     monkeypatch.setattr(backend, "_cupy", fail)
+    backend._gpu_probe.cache_clear()
     with pytest.raises(backend.BackendUnavailableError, match="unavailable"):
         backend.select_backend("gpu")
     assert backend.select_backend("auto").name == "cpu"
+    backend._gpu_probe.cache_clear()
 
 
 def test_cpu_conversion_and_sync():

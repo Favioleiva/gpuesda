@@ -21,8 +21,8 @@
 
 ## Current phase
 
-Phase 5 — Performance (core implementation and validation complete).
+Phase 6 — Delivery complete.
 
 ## Next concrete action
 
-Create notebooks and benchmark report, finish README, then run final packaging/tests and acceptance review.
+MVP complete. Next optional action: run the extended 5k–25k and cross-hardware benchmark matrix.

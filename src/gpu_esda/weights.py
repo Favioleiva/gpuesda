@@ -87,6 +87,10 @@ def inverse_distance_weights(
     coords = xp.asarray(coords_np)
     free = int(memory_diagnostics(info.name)["free_bytes"])
     predicted = n * (k if k is not None else (n - 1))
+    if threshold is not None and k is None:
+        # Unknown radii are conservatively treated as sparse until diagnostics
+        # from the constructed matrix prove otherwise.
+        predicted = min(predicted, n * min(32, n - 1))
     fmt = _choose_format(n, predicted, coords.dtype.itemsize, free, output_format)
     # Building rows as dense blocks avoids a full temporary distance tensor.
     if block_size is None:

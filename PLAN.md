@@ -25,8 +25,18 @@
 
 ## Current phase
 
-Phase 8 — Raster observed core validated; national observed run next.
+Phase 10 — Black Marble/A100 delivery completed locally. The A100 execution artifact is ready but has not been run on A100 hardware from this workstation.
+
+## Completed raster acceptance criteria
+
+- The private Black Marble grid and daily Parquet were audited at 6,111,958 rows with a verified one-to-one integer topology.
+- Rook, Queen, and circular `d^-2` run as implicit NumPy/CuPy stencils without an `n × n` matrix.
+- Observed Global/Local Moran and quadrants were validated against explicit PySAL weights on small grids and run nationally on an RTX 3060.
+- Global and focal-fixed conditional-local inference stream permutation batches and recover from GPU OOM by reducing batch size.
+- The vector regression suite remains intact; the combined suite passes on CPU and live CUDA.
+- Package version 0.2.0 builds as an independently importable wheel.
+- Notebook 06 installs that wheel and contains the reproducible A100 workflow rather than a duplicate implementation.
 
 ## Next concrete action
 
-Execute NTL/log1p observed statistics on the national raster and profile local RTX 3060 memory/runtime.
+Upload the tested 0.2.0 wheel to an A100 Colab session and execute notebook 06 end to end. This is an external-hardware run, not an outstanding local implementation task.

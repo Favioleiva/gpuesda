@@ -32,3 +32,44 @@ Float64 passed strict equivalence and remains the default. Float32 passes the do
 
 Remaining bottlenecks include random ordering generation, Python-level panel result assembly, host/device summary conversions, and sparse setup when the graph is unsuitable for sparse storage. The next measurements should cover T4/L4/A100, feasible 5k–25k threshold/KNN cases, 10/100 columns resident on device, and isolated Local Moran timings.
 
+## Raster extension: national Black Marble run
+
+The raster measurements use the same RTX 3060, CuPy stack, and synchronized CUDA timing. They cover the complete private Black Marble Peru dataset for 2024-03-21: 6,111,958 occupied cells reconstructed into a 4,395 × 3,042 rectangle. All spatial weights are implicit stencils; no national weights matrix exists.
+
+| National operation | Measured result |
+|---|---:|
+| Parquet read | 0.207 s |
+| Read plus raster reconstruction | 7.143 s |
+| Host-to-device transfer | 0.021 s |
+| Complete observed script: 2 transforms × 3 stencils, figures and export | 17.854 s |
+| Peak process RSS | 1.585 GB |
+| Peak CuPy used pool | 548.2 MB |
+| Peak CuPy reserved pool | 1.136 GB |
+| Queen `log1p(NTL)` observed standardization | 0.0081 s |
+| Queen `log1p(NTL)` observed lag | 0.0169 s |
+| Queen `log1p(NTL)` Global reduction | 0.0024 s |
+| Queen `log1p(NTL)` Local Moran | 0.0099 s |
+| Queen `log1p(NTL)` 99 global permutations | 4.394 s |
+
+Observed Global Moran I was:
+
+| Transform | Rook | Queen | `d^-2`, radius 2 |
+|---|---:|---:|---:|
+| NTL | 0.3195941370 | 0.2122286480 | 0.2139488041 |
+| `log1p(NTL)` | 0.8838645194 | 0.8645893256 | 0.8618631192 |
+
+The national 99-permutation Queen global smoke run on `log1p(NTL)` produced `p_sim=0.01`, simulated mean `4.08e-06`, and simulated standard deviation `1.88e-04`. This validates the streaming path and is not presented as production inference. National conditional-local 99/999 inference is assigned to notebook 06 on A100 hardware, after its mandatory small-window CPU/GPU check.
+
+The apparently small stencil kernel times are plausible because each pass is linear in the rectangular storage and uses only 4–12 shifted array operations. The 17.854 s total is dominated by reconstruction, compilation/warm-up, plotting, host transfers, and Parquet export. These measurements should not be generalized to A100 until the notebook benchmark table has been produced there.
+
+## Completed A100 production execution
+
+Notebook 06 subsequently completed on an NVIDIA A100-SXM4-80GB using the unchanged 0.2.0 wheel. These are measurements of that specific Colab execution, not universal A100 benchmarks.
+
+| Operator | Global 999-permutation stage | Used VRAM snapshot | Peak CuPy pool snapshot |
+|---|---:|---:|---:|
+| Rook | 9.395 s | 8.334 GiB | 7.868 GiB |
+| Queen | 10.512 s | 10.111 GiB | 9.640 GiB |
+| `d^-2`, radius 2 | 11.594 s | 9.959 GiB | 9.491 GiB |
+
+The recorded notebook workflow reports 134.139 seconds total. Comparisons across operators should focus first on the statistical results and topology; runtime differences include operator-specific work and the state of this one runtime.

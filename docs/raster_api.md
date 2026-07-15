@@ -61,3 +61,19 @@ Local results expose `local_i`, `spatial_lag`, `quadrant`, `p_sim`, `p_fdr`, `si
 `BlackMarbleRaster.from_parquet` reads the grid and daily files, validates unique one-to-one `cell_id`, aligns the daily values if necessary, and reconstructs arrays directly from `grid_row` and `grid_col`. Missing daily values remain invalid; numeric zero is not NoData. `raster.log1p()` preserves the same mask and mapping.
 
 The complete audit and local runner are available in `scripts/audit_blackmarble_grid.py` and `scripts/run_blackmarble_observed.py`. Reusable `save_figure` writes figures with `dpi=200, bbox_inches="tight"` before optional display.
+
+## Project post-processing helpers
+
+```python
+from scripts.blackmarble_postprocessing import (
+    inferential_cluster_mask,
+    lisa_class_counts,
+    moran_scatter_line,
+)
+
+clusters = inferential_cluster_mask(valid, island, significant, quadrant)
+counts = lisa_class_counts(quadrant, clusters)
+x_line, wy_line = moran_scatter_line(global_result.I, -3.0, 4.0)
+```
+
+These pure NumPy helpers are project-level post-processing, not additions to the unchanged `gpu_esda 0.2.0` wheel. `inferential_cluster_mask` formalizes `valid & ~island & significant & quadrant∈{1,2,3,4}`. It prevents the raw FDR boolean from classifying NoData or islands. `lisa_class_counts` returns auditable HH/LH/LL/HL totals for any selection. `moran_scatter_line` returns the canonical zero-intercept `WY = I × Y` reference line.

@@ -76,7 +76,7 @@ python scripts/run_blackmarble_permutation_smoke.py
 
 Generated JSON, Parquet, CSV, and PNG artifacts are written below `results/` and `benchmarks/results/`. Figures are always saved at 200 dpi before display. These host outputs are intentionally ignored by Git; `.gitkeep` files retain the directories.
 
-For Google Colab, build or use `dist/gpu_esda-0.2.0-py3-none-any.whl`, then run `notebooks/06_blackmarble_peru_a100.ipynb`. The notebook uploads and installs the wheel, requires an A100, reads the Hugging Face token securely, verifies hashes and row counts, validates a small CPU/GPU window, runs 99 permutations first, conditionally runs 999, applies FDR, saves every figure, and exports cell-level results retaining `cell_id`.
+The canonical Google Colab run is `notebooks/06_blackmarble_peru_a100.ipynb`. It installed the unchanged 0.2.0 wheel and completed successfully on an NVIDIA A100-SXM4-80GB. It verified hashes and row counts, validated a small CPU/GPU window, used `log(1000 × NTL + 1)`, ran 999 production permutations with seed 12345, applied BH-FDR at `q ≤ 0.05`, saved every figure, and exported cell-level results retaining `cell_id`.
 
 ## Reproduce and verify
 
@@ -93,11 +93,15 @@ The raster suite covers 3×3, 5×5, and 10×10 grids; complete, hole, irregular 
 
 ## Current evidence
 
-On the local RTX 3060, the full national observed workflow completed for raw NTL and `log1p(NTL)` with Rook, Queen, and radius-2 `d^-2`. Peak CuPy pool use was about 523 MiB and total wall time including six analyses, figures, and export was 17.85 s. For `log1p(NTL)`, observed Global Moran I was 0.8838645 (Rook), 0.8645893 (Queen), and 0.8618631 (`d^-2`, radius 2). A 99-permutation global Queen smoke run returned `p_sim=0.01` in 4.39 s. National conditional-local permutations are intentionally delegated to the A100 notebook.
+The production A100 results use `log(1000 × NTL + 1)`. Global Moran I is 0.6121386781 for Rook, 0.5834607333 for Queen, and 0.5826043915 for radius-2 `d^-2`; every global `p_sim` is 0.001. After BH-FDR and exclusion of NoData and islands, significant local clusters total 403,205, 1,174,888, and 1,360,043 respectively. Rook has the largest global association but far fewer significant local clusters. Queen and `d^-2` have similar Global Moran I, while `d^-2` retains 185,155 more local clusters.
+
+The package's raw `significant` boolean is not the final cluster mask. Reporting uses `valid & ~island & significant & quadrant_between_1_and_4`. This distinction removes Queen's 10 islands from its raw 1,174,898 boolean count. Times in the A100 files describe this concrete execution only and are not universal benchmarks.
+
+Run `python scripts/blackmarble_postprocessing.py` to regenerate the corrected comparison, interpretation JSON, and SHA-256 manifest without CUDA. Original A100 CSV/JSON artifacts remain immutable. Only Queen has an archived cell-level Parquet; the two Queen paths are identical copies, and no Rook or `d^-2` local Parquet was retained.
 
 Vector evidence remains unchanged: Columbus matches PySAL to floating-point tolerance with zero quadrant mismatches, and all original notebooks and benchmarks remain present.
 
-See the [raster API](docs/raster_api.md), [grid audit](docs/blackmarble_grid_audit.md), [methodology](docs/methodology.md), [benchmark report](docs/benchmark_report.md), and [status](STATUS.md).
+See the [A100 results](docs/blackmarble_a100_results.md), [artifact audit](docs/blackmarble_a100_artifact_audit.md), [raster API](docs/raster_api.md), [grid audit](docs/blackmarble_grid_audit.md), [methodology](docs/methodology.md), [benchmark report](docs/benchmark_report.md), and [status](STATUS.md).
 
 ## Validation policy
 

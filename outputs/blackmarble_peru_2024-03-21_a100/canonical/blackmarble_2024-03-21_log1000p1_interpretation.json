@@ -1,0 +1,68 @@
+{
+  "artifact_role": "canonical post-run interpretation; original A100 files are immutable",
+  "original_execution_metadata": "metadata/blackmarble_2024-03-21_log1000p1_run_metadata.json",
+  "original_comparison_csv": "tables/blackmarble_2024-03-21_log1000p1_a100_comparison.csv",
+  "canonical_comparison_csv": "canonical/blackmarble_2024-03-21_log1000p1_a100_comparison_canonical.csv",
+  "dataset": {
+    "product": "VNP46A2",
+    "date": "2024-03-21",
+    "rows": 6111958
+  },
+  "transformation": "log(1000 * NTL + 1)",
+  "seed": 12345,
+  "permutations": 999,
+  "fdr": "Benjamini-Hochberg q <= 0.05",
+  "inferential_mask": "valid & ~island & significant & quadrant.isin([1, 2, 3, 4])",
+  "operators": {
+    "rook": {
+      "moran_i": 0.6121386780581684,
+      "p_sim": 0.001,
+      "permutations": 999,
+      "islands": 50,
+      "valid_nonisland": 6111908,
+      "raw_local_significant": 403255,
+      "significant_on_nodata": 0,
+      "significant_on_islands": 50,
+      "inferential_local_fdr_significant": 403205,
+      "inferential_local_fdr_share": 0.0659703974601711
+    },
+    "queen": {
+      "moran_i": 0.5834607333411405,
+      "p_sim": 0.001,
+      "permutations": 999,
+      "islands": 10,
+      "valid_nonisland": 6111948,
+      "raw_local_significant": 1174898,
+      "significant_on_nodata": 0,
+      "significant_on_islands": 10,
+      "inferential_local_fdr_significant": 1174888,
+      "inferential_local_fdr_share": 0.19222807523886
+    },
+    "d2_r2": {
+      "moran_i": 0.5826043914844692,
+      "p_sim": 0.001,
+      "permutations": 999,
+      "islands": 8,
+      "valid_nonisland": 6111950,
+      "raw_local_significant": 1360051,
+      "significant_on_nodata": 0,
+      "significant_on_islands": 8,
+      "inferential_local_fdr_significant": 1360043,
+      "inferential_local_fdr_share": 0.2225219447148618
+    }
+  },
+  "queen_reconciliation": {
+    "equation": "1,174,898 - 10 = 1,174,888",
+    "rows": 6111958,
+    "raw_significant_total": 1174898,
+    "raw_significant_nodata": 0,
+    "raw_significant_islands": 10,
+    "inferential_significant": 1174888
+  },
+  "parquet_availability": {
+    "queen": "local_results/blackmarble_2024-03-21_log1000p1_local_queen.parquet",
+    "rook": null,
+    "d2_r2": null,
+    "limitation": "No local Rook or d2_r2 Parquet was archived. Their global results, counts, and figures are preserved; inference was not rerun."
+  }
+}

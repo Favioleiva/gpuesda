@@ -25,7 +25,7 @@
 
 ## Current phase
 
-Phase 10 — Black Marble/A100 delivery completed locally. The A100 execution artifact is ready but has not been run on A100 hardware from this workstation.
+Phase 10 — Black Marble/A100 delivery and production execution complete; closing audit, regression, and documentation are in progress.
 
 ## Completed raster acceptance criteria
 
@@ -36,7 +36,8 @@ Phase 10 — Black Marble/A100 delivery completed locally. The A100 execution ar
 - The vector regression suite remains intact; the combined suite passes on CPU and live CUDA.
 - Package version 0.2.0 builds as an independently importable wheel.
 - Notebook 06 installs that wheel and contains the reproducible A100 workflow rather than a duplicate implementation.
+- Notebook 06 completed on an NVIDIA A100-SXM4-80GB with 999 permutations and BH-FDR results for all three operators.
 
 ## Next concrete action
 
-Upload the tested 0.2.0 wheel to an A100 Colab session and execute notebook 06 end to end. This is an external-hardware run, not an outstanding local implementation task.
+Review the closing artifact policy and proposed commit; do not commit until the user confirms the exact file set.

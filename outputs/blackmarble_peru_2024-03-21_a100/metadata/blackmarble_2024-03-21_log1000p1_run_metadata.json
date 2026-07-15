@@ -1,0 +1,105 @@
+{
+  "gpu": "NVIDIA A100-SXM4-80GB",
+  "vram_bytes": 85094825984,
+  "driver": 13000,
+  "cuda_runtime": 12090,
+  "python": "3.12.13",
+  "cupy": "14.0.1",
+  "gpu_esda": "0.2.0",
+  "wheel_sha256": "40d3b7d46c5b0eeeae3d9f76302bec42ab620a74b8e0c68d313065cb5b068fd9",
+  "package_commit": "d7f15b1",
+  "validation": {
+    "window": [
+      0,
+      1408,
+      128,
+      128
+    ],
+    "cpu_I": 0.21516160898740125,
+    "gpu_I": 0.21516160898740125,
+    "absolute_difference": 0.0
+  },
+  "grid_sha256": "40744b0152a4ef82085250107ca7d665ccb40c06746e9476c156fbcc9de2ce93",
+  "daily_sha256": "b39dbb8505f609a49c4013dc7911bbc29aea54f90487bd07f5555ec86e354142",
+  "rows": 6111958,
+  "shape": [
+    4395,
+    3042
+  ],
+  "production_transformation": {
+    "formula": "log(1000 * NTL + 1)",
+    "scale": 1000.0,
+    "zero_preserving": true
+  },
+  "total_seconds": 134.13891065899952,
+  "smoke_99": {
+    "global": {
+      "I": 0.5834607333411405,
+      "EI": -1.6361371652320198e-07,
+      "n": 6111958,
+      "s0": 6111948.0,
+      "backend": "gpu",
+      "dtype": "float32",
+      "timings": {
+        "standardization": 0.03476257199963584,
+        "spatial_lag": 0.006995630999881541,
+        "global_reduction": 0.03809316700062482,
+        "total": 0.0798513700001422,
+        "permutations": 3.233203900999797,
+        "permutation_randomization": 0.455639819998396,
+        "permutation_spatial_lag": 1.6669037980009307,
+        "permutation_reduction": 1.1106602830004704
+      },
+      "p_sim": 0.01,
+      "EI_sim": -1.717762108533888e-05,
+      "seI_sim": 0.00014406400699677944,
+      "z_sim": 4050.1296828101517,
+      "permutations": 99,
+      "seed": 12345
+    },
+    "local_significant_fdr": 0,
+    "free_vram_after": 74250518528
+  },
+  "production_999": {
+    "permutations": 999,
+    "global_p_sim": 0.001,
+    "local_fdr_significant": 1174898
+  },
+  "memory_snapshots": [
+    {
+      "stage": "environment_ready",
+      "free_vram_gib": 78.83282470703125,
+      "used_vram_gib": 0.41790771484375,
+      "cupy_pool_used_gib": 0.0,
+      "cupy_pool_total_gib": 0.0
+    },
+    {
+      "stage": "raster_transferred_and_transformed",
+      "free_vram_gib": 78.63165283203125,
+      "used_vram_gib": 0.61907958984375,
+      "cupy_pool_used_gib": 0.11271905899047852,
+      "cupy_pool_total_gib": 0.18600845336914062
+    },
+    {
+      "stage": "observed_esda_complete",
+      "free_vram_gib": 77.61602783203125,
+      "used_vram_gib": 1.63470458984375,
+      "cupy_pool_used_gib": 0.7601933479309082,
+      "cupy_pool_total_gib": 1.1820831298828125
+    },
+    {
+      "stage": "smoke_99_complete",
+      "free_vram_gib": 69.15118408203125,
+      "used_vram_gib": 10.09954833984375,
+      "cupy_pool_used_gib": 1.195993423461914,
+      "cupy_pool_total_gib": 9.631731986999512
+    },
+    {
+      "stage": "production_inference_complete",
+      "free_vram_gib": 69.13946533203125,
+      "used_vram_gib": 10.11126708984375,
+      "cupy_pool_used_gib": 1.195993423461914,
+      "cupy_pool_total_gib": 9.640032291412354
+    }
+  ]
+}

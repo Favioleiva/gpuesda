@@ -2,15 +2,30 @@
 
 ## Current state
 
-- Phase: Raster extension — local delivery complete
-- Overall: vector MVP protected; raster CPU/GPU 0.2.0 tested and packaged
+- Phase: Raster extension — completed A100 run under closing audit
+- Overall: vector MVP protected; raster CPU/GPU 0.2.0 executed nationally on A100
 - Branch: `feature/raster-stencil`
 - Vector baseline tag: `v0.1.0-vector-mvp`
 - Package version: `0.2.0`
 - Latest implementation commit: `d7f15b1`
-- Next action: execute notebook 06 on external A100 Colab hardware
+- Next action: present closing summary and exact commit proposal without committing
 
 ## Updates
+
+### 2026-07-16 — Completed A100 run audited and interpretation regressions added
+
+- Completed task: inventoried all A100 outputs without modifying them; verified the comparison CSV, figures, ZIP integrity, Parquet schema/counts, duplicate hashes, and manifest paths/sizes.
+- Files created or modified: raster interpretation helper, five deterministic CPU tests, A100 results/artifact-audit documentation, README, methodology, raster API, benchmark report, plan, and status.
+- Commands executed: read-only Git/tree audit; SHA-256 inventory; PNG metadata validation; ZIP CRC test; CSV/JSON inspection; PyArrow Parquet aggregation; focused pytest and Ruff.
+- Test results: seven new tests passed. The complete non-CUDA regression selection passed 38 tests in 3.09 s; Ruff and compileall passed. Four CUDA-aware modules were intentionally not collected because the completed A100 inference and local CUDA execution were explicitly out of scope. The new tests cover NoData/island exclusion, exact inferential mask semantics, class-count identities, a synthetic ten-island Queen correction, Monte Carlo p-value floor, local raster shape, the canonical zero-intercept Moran line, direct Parquet raw/island reconciliation, and manifest self-exclusion with SHA-256 verification.
+- Canonical results: Rook I=0.6121386781 and 403,205 FDR clusters; Queen I=0.5834607333 and 1,174,888; radius-2 `d^-2` I=0.5826043915 and 1,360,043. All use 999 permutations, seed 12345, and global `p_sim=0.001`.
+- Audit findings: required maps and scatter plots are complete; byte-identical alias copies exist; the metadata retains the raw Queen boolean count 1,174,898, while the comparison CSV correctly excludes its 10 islands; the manifest lacks hashes and has a stale self-size row.
+- Decisions: preserve immutable run artifacts and document the raw/inferential distinction rather than rewrite A100 numeric files. Do not run CUDA or national inference again. Do not add the 71.30 MiB Parquet or 75.08 MiB ZIP to ordinary Git.
+- Post-processing correction: verified the stored execution CSV already has Queen `raw_significant_islands=10`; generated a separate canonical comparison directly from the raw Queen Parquet. It records raw total 1,174,898, NoData 0, islands 10, and inferential total 1,174,888 without rewriting provenance artifacts.
+- Canonical derived files: corrected comparison CSV, interpretation JSON, and SHA-256 artifact manifest under `outputs/blackmarble_peru_2024-03-21_a100/canonical/`. The manifest excludes itself and marks three aliases as duplicates with canonical references.
+- Archive limitation: the two Queen Parquet files are identical; no Rook or `d2_r2` local Parquet exists. Global statistics, counts, and figures remain complete, so no inference was rerun.
+- Secret review: the executed notebook contains `HF_TOKEN`/`hf_` identifiers used for secure authentication but no token value, bearer credential, authorization value, API key, or access token. No redaction was required.
+- Next action: complete non-CUDA validation, stage only the approved canonical subset, show the cached diff, and wait for confirmation without committing.
 
 ### 2026-07-16 01:12 JST — National observed Black Marble run completed
 

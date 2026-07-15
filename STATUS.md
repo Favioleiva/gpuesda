@@ -54,7 +54,7 @@
 - Test results: 52 passed in 27.76 s with one upstream ESDA deprecation warning; Ruff clean; Python compilation successful; no broken requirements; notebook valid with nine cells. Columbus remains exact on CPU, within `7.11e-15` lag and `6.66e-16` Local Moran on GPU, with zero quadrant mismatches.
 - Environment result: live RTX 3060 detected with 12 GiB, CuPy 14.1.1, CUDA runtime 13.2, and driver 591.86.
 - Problems encountered: isolated wheel rebuild attempted to download Hatchling and was blocked by managed network access; the already-installed build backend was used safely with `--no-build-isolation`, producing the final wheel.
-- Next action: commit this delivery state on `feature/raster-stencil`; A100 execution remains external.
+- Next action: execute notebook 06 on external A100 Colab hardware and retain its exported benchmark metadata; no local implementation task remains.
 
 ### 2026-07-16 00:18 JST — Vector MVP protected and baseline revalidated
 

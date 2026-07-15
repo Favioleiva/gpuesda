@@ -55,3 +55,13 @@ def test_local_marks_island_explicitly():
     result = moran_local(values, RasterWeights.rook(mask, backend="cpu", dtype="float64"))
     assert result.island[2, 2]
     assert result.quadrant_code[2, 2] == 0
+
+
+def test_float32_storage_with_float64_reductions():
+    values = np.arange(25, dtype=np.float32).reshape(5, 5)
+    operator = RasterWeights.queen(np.ones((5, 5), bool), backend="cpu")
+    global_result = moran_global(values, operator)
+    local_result = moran_local(values, operator)
+    assert global_result.dtype == "float32"
+    assert local_result.z.dtype == np.float32
+    assert local_result.local_i.dtype == np.float32

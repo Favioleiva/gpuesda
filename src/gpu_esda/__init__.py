@@ -6,7 +6,7 @@ from .local_moran import MoranLocal, local_moran_panel
 from .moran import Moran, moran_panel
 from .multiple_testing import adjust_pvalues
 from .operators import MatrixWeightsOperator, RasterStencilOperator, RasterWeights, SpatialOperator
-from .raster import BlackMarbleRaster, moran_global, moran_local
+from .raster import BlackMarbleRaster, moran_global, moran_local, moran_observed
 from .weights import inverse_distance_weights
 
 __all__ = [
@@ -25,9 +25,10 @@ __all__ = [
     "memory_diagnostics",
     "moran_global",
     "moran_local",
+    "moran_observed",
     "moran_panel",
     "select_backend",
     "spatial_lag",
 ]
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"

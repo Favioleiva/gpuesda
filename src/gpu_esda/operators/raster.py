@@ -7,8 +7,8 @@ from typing import Any, Literal
 import numpy as np
 
 from ..backend import BackendName, _cupy, select_backend
-from ..raster.stencils import Stencil, inverse_distance_stencil, queen_stencil, rook_stencil
 from .base import SpatialOperator
+from .stencils import Stencil, inverse_distance_stencil, queen_stencil, rook_stencil
 
 Normalization = Literal["row", "none"]
 

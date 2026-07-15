@@ -15,8 +15,14 @@ benchmarks/results/*
 !benchmarks/results/.gitkeep
 results/*
 !results/.gitkeep
+!results/figures/
+results/figures/*
+!results/figures/.gitkeep
+!results/blackmarble/
+results/blackmarble/*
+!results/blackmarble/.gitkeep
 *.cuobj
 *.cubin
 *.ptx
 .env
-
+dist/

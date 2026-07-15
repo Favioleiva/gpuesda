@@ -33,8 +33,11 @@ class BlackMarbleRaster:
         dtype: str = "float32",
     ) -> "BlackMarbleRaster":
         started = time.perf_counter()
+        read_started = time.perf_counter()
         grid = pq.read_table(grid_path, columns=["cell_id", "grid_row", "grid_col"])
         daily = pq.read_table(daily_path, columns=["cell_id", value_column])
+        read_seconds = time.perf_counter() - read_started
+        reconstruction_started = time.perf_counter()
         grid_ids = grid.column("cell_id").to_numpy()
         daily_ids = daily.column("cell_id").to_numpy()
         if len(grid_ids) != len(daily_ids) or np.unique(grid_ids).size != len(grid_ids):
@@ -80,6 +83,8 @@ class BlackMarbleRaster:
                 "source_rows": len(grid_ids),
                 "valid_values": int(valid.sum()),
                 "missing_values": int((~valid).sum()),
+                "read_seconds": read_seconds,
+                "array_reconstruction_seconds": time.perf_counter() - reconstruction_started,
                 "reconstruction_seconds": time.perf_counter() - started,
             },
         )

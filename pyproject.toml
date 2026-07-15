@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "gpu-esda"
-version = "0.1.0"
+version = "0.2.0"
 description = "Validated vector and raster CPU/GPU backend for exploratory spatial data analysis"
 readme = "README.md"
 requires-python = ">=3.10"

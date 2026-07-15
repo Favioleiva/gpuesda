@@ -25,10 +25,7 @@ def _version(module: str) -> str | None:
 
 
 def _nvidia_smi() -> dict[str, Any]:
-    query = (
-        "name,driver_version,memory.total,memory.free,"
-        "compute_cap"
-    )
+    query = "name,driver_version,memory.total,memory.free,compute_cap"
     try:
         result = subprocess.run(
             ["nvidia-smi", f"--query-gpu={query}", "--format=csv,noheader,nounits"],
@@ -77,7 +74,14 @@ def collect_diagnostics() -> dict[str, Any]:
         "packages": {
             name: _version(name)
             for name in (
-                "numpy", "scipy", "pandas", "geopandas", "libpysal", "esda", "numba", "cupy"
+                "numpy",
+                "scipy",
+                "pandas",
+                "geopandas",
+                "libpysal",
+                "esda",
+                "numba",
+                "cupy",
             )
         },
         "nvidia_smi": _nvidia_smi(),

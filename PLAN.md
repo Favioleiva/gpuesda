@@ -21,9 +21,8 @@
 
 ## Current phase
 
-Phase 1 — Foundation.
+Phase 5 — Performance (core implementation and validation complete).
 
 ## Next concrete action
 
-Run the environment diagnostic, install missing reference dependencies, then inspect installed PySAL/ESDA source.
-
+Create notebooks and benchmark report, finish README, then run final packaging/tests and acceptance review.

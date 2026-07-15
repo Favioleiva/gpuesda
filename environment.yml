@@ -4,7 +4,7 @@ channels:
 dependencies:
   - python>=3.10
   - numpy>=1.26
-  - scipy>=1.11
+  - scipy>=1.11,<1.17
   - pandas>=2
   - geopandas>=0.14
   - shapely>=2
@@ -18,4 +18,3 @@ dependencies:
   - numba>=0.61
   # Install cupy from the nvidia/conda-forge channel only after running
   # scripts/diagnose_environment.py and matching it to the detected driver.
-
